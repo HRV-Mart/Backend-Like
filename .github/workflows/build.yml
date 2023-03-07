@@ -1,9 +1,10 @@
 name: Build Flow
 
 on:
-  push:
+  pull_request:
     branches:
       - '*'
+
 env:
   MONGODB_URI: 'mongodb://localhost:27017'
   PORT: '8080'
