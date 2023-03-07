@@ -54,10 +54,6 @@ class LikeService (
                         userId = userId,
                         productId = productId
                     )
-                        .flatMap<String?> {
-                            response.statusCode = HttpStatus.OK
-                            Mono.empty()
-                        }
                         .then(Mono.just("Like removed successfully"))
                 }
                 else {
