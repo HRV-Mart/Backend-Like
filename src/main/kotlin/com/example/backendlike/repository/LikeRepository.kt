@@ -9,8 +9,8 @@ import reactor.core.publisher.Mono
 
 @Repository
 interface LikeRepository :ReactiveMongoRepository<Like, String> {
-    fun findLikeByUserID(userId: String, pageRequest: PageRequest): Flux<Like>
-    fun countLikeByUserID(userId: String): Mono<Long>
-    fun deleteByUserIDAndProductId(userId: String, productId: String): Mono<Void>
-    fun existsByUserIDAndProductId(userId: String, productId: String): Mono<Boolean>
+    fun findLikeByUserId(userId: String, pageRequest: PageRequest): Flux<Like>
+    fun countLikeByUserId(userId: String): Mono<Long>
+    fun deleteByUserIdAndProductId(userId: String, productId: String): Mono<Void>
+    fun existsByUserIdAndProductId(userId: String, productId: String): Mono<Boolean>
 }

@@ -7,6 +7,6 @@ import org.springframework.data.mongodb.core.mapping.Document
 @CompoundIndex(name = "like_idx", def = "{'userId': 1, 'productId': 1}",
     unique = true)
 data class Like (
-    val userID: String,
+    val userId: String,
     val productId: String
 )

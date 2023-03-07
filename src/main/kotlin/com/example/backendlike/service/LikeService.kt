@@ -17,10 +17,10 @@ class LikeService (
 )
 {
     fun getAllLikesOfUser(userId: String, pageRequest: PageRequest) =
-        likeRepository.findLikeByUserID(userId, pageRequest)
+        likeRepository.findLikeByUserId(userId, pageRequest)
             .collectList()
             .flatMap { likes ->
-                likeRepository.countLikeByUserID(userId)
+                likeRepository.countLikeByUserId(userId)
                     .map {totalSize ->
                         Pageable<Like>(
                             data = likes,
@@ -50,14 +50,15 @@ class LikeService (
         )
             .flatMap {
                 if (it) {
-                    likeRepository.deleteByUserIDAndProductId(
+                    likeRepository.deleteByUserIdAndProductId(
                         userId = userId,
                         productId = productId
                     )
-                        .map {
+                        .flatMap<String?> {
                             response.statusCode = HttpStatus.OK
-                            "Like removed successfully"
+                            Mono.empty()
                         }
+                        .then(Mono.just("Like removed successfully"))
                 }
                 else {
                     response.statusCode = HttpStatus.NOT_FOUND
@@ -65,7 +66,7 @@ class LikeService (
                 }
             }
     fun likeExistByUserIdAndProductId(userId: String, productId: String) =
-        likeRepository.existsByUserIDAndProductId(
+        likeRepository.existsByUserIdAndProductId(
             userId = userId,
             productId = productId
         )
