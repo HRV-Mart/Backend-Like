@@ -28,7 +28,12 @@ class LikeControllerTest {
     }
     @Test
     fun `should not insert like in database when it exist in database`() {
-
+        doReturn(Mono.error<Exception>(Exception("Like already exist")))
+            .`when`(likeRepository)
+            .insert(like)
+        StepVerifier.create(likeController.addProductToLike(like, response))
+            .expectNext("Like already exist")
+            .verifyComplete()
     }
     @Test
     fun `should remove like from database when it does not exist in database`() {
