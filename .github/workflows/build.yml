@@ -1,9 +1,10 @@
 name: Build Flow
 
 on:
-  push:
+  pull_request:
     branches:
       - '*'
+
 env:
   MONGODB_URI: 'mongodb://localhost:27017'
   PORT: '8080'
@@ -12,7 +13,6 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, 'ci skip')"
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
