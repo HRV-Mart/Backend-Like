@@ -77,7 +77,7 @@ class LikeControllerTest {
 
     }
     @Test
-    fun `should return empoty like list by user if it does notx exist in database`() {
+    fun `should return empty like list by user if it does not exist in database`() {
 
     }
 }
