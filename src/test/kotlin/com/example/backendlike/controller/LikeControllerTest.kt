@@ -37,11 +37,32 @@ class LikeControllerTest {
     }
     @Test
     fun `should remove like from database when it does not exist in database`() {
-
+        doReturn(Mono.just(true))
+            .`when`(likeRepository)
+            .existsByUserIdAndProductId(like.userId, like.productId)
+        doReturn(Mono.empty<Void>())
+            .`when`(likeRepository)
+            .deleteByUserIdAndProductId(like.userId, like.productId)
+        StepVerifier.create(likeController.removeProductFromLike(
+            userId = like.userId,
+            productId = like.productId,
+            response = response
+        ))
+            .expectNext("Like removed successfully")
+            .verifyComplete()
     }
     @Test
     fun `should not remove like from database if it does not exist in database`() {
-
+        doReturn(Mono.just(false))
+            .`when`(likeRepository)
+            .existsByUserIdAndProductId(like.userId, like.productId)
+        StepVerifier.create(likeController.removeProductFromLike(
+            userId = like.userId,
+            productId = like.productId,
+            response = response
+        ))
+            .expectNext("Like not found")
+            .verifyComplete()
     }
     @Test
     fun `should return true if like exist in database`() {
