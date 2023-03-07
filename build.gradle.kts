@@ -4,6 +4,7 @@ plugins {
     id("org.springframework.boot") version "3.0.2"
     id("io.spring.dependency-management") version "1.1.0"
     id("io.gitlab.arturbosch.detekt") version "1.22.0"
+    id("jacoco")// This is to use Jacoco for coverage testing
     kotlin("jvm") version "1.7.22"
     kotlin("plugin.spring") version "1.7.22"
 }
@@ -42,4 +43,24 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    // To run Jacoco Test Coverage Verification
+    finalizedBy("jacocoTestCoverageVerification")
+}
+tasks.jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            excludes = listOf(
+                "com.hrv.mart.user.repository.UserRepository.kt.*"
+            )
+            limit {
+                minimum = "0.9".toBigDecimal()
+            }
+        }
+    }
+}
+tasks.jacocoTestReport{
+    reports {
+        html.required.set(true)
+        generate()
+    }
 }
