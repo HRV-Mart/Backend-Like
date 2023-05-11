@@ -18,10 +18,9 @@ class LikeService (
     @Autowired
     private val likeRepository: LikeRepository,
     @Autowired
-    private val webClientBuilder: WebClient.Builder,
+    private val productRepository: ProductRepository
 )
 {
-    private val productRepository = ProductRepository(webClientBuilder)
     fun getAllLikesOfUser(userId: String, pageRequest: PageRequest) =
         likeRepository.findLikeByUserId(userId, pageRequest)
             .map { it.productId }
