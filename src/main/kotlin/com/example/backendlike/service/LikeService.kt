@@ -3,27 +3,34 @@ package com.example.backendlike.service
 import com.hrv.mart.custompageable.Pageable
 import com.example.backendlike.model.Like
 import com.example.backendlike.repository.LikeRepository
+import com.hrv.mart.product.Product
+import com.hrv.mart.product.repository.ProductRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
 import org.springframework.http.server.reactive.ServerHttpResponse
 import org.springframework.stereotype.Service
+import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Mono
 
 @Service
 class LikeService (
     @Autowired
-    private val likeRepository: LikeRepository
+    private val likeRepository: LikeRepository,
+    @Autowired
+    private val webClientBuilder: WebClient.Builder,
 )
 {
+    private val productRepository = ProductRepository(webClientBuilder)
     fun getAllLikesOfUser(userId: String, pageRequest: PageRequest) =
         likeRepository.findLikeByUserId(userId, pageRequest)
             .map { it.productId }
+            .flatMap { productRepository.getProductByProductId(it) }
             .collectList()
             .flatMap { likes ->
                 likeRepository.countLikeByUserId(userId)
                     .map {totalSize ->
-                        Pageable<String>(
+                        Pageable<Product>(
                             data = likes,
                             size = pageRequest.pageSize.toLong(),
                             nextPage = Pageable.getNextPage(
