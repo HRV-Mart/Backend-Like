@@ -1,6 +1,5 @@
 package com.example.backendlike.service
 
-import com.example.backendlike.fixture.Pageable
 import com.example.backendlike.model.Like
 import com.example.backendlike.repository.LikeRepository
 import org.springframework.beans.factory.annotation.Autowired
