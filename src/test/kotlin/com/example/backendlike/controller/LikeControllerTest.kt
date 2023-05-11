@@ -1,6 +1,6 @@
 package com.example.backendlike.controller
 
-import com.example.backendlike.fixture.Pageable
+import com.hrv.mart.custompageable.Pageable
 import com.example.backendlike.model.Like
 import com.example.backendlike.repository.LikeRepository
 import com.example.backendlike.service.LikeService
