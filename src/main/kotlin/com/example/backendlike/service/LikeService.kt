@@ -18,11 +18,12 @@ class LikeService (
 {
     fun getAllLikesOfUser(userId: String, pageRequest: PageRequest) =
         likeRepository.findLikeByUserId(userId, pageRequest)
+            .map { it.productId }
             .collectList()
             .flatMap { likes ->
                 likeRepository.countLikeByUserId(userId)
                     .map {totalSize ->
-                        Pageable<Like>(
+                        Pageable<String>(
                             data = likes,
                             size = pageRequest.pageSize.toLong(),
                             nextPage = Pageable.getNextPage(
