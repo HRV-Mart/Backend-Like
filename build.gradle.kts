@@ -40,7 +40,7 @@ dependencies {
     // Custom-Pageable
     implementation("com.hrv.mart:custom-pageable:0.0.1-SNAPSHOT")
     // product
-    implementation("com.hrv.mart:product:0.0.2")
+    implementation("com.hrv.mart:product:0.0.3")
 }
 detekt {
     toolVersion = "1.22.0"
