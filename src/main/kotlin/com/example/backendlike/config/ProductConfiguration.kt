@@ -17,6 +17,8 @@ class ProductConfiguration (
 {
     @Bean
     fun getProductRepository() =
-        ProductRepository(webClientBuilder, "")
-
+        ProductRepository(
+            webClientBuilder=webClientBuilder,
+            productURL=productUrl
+        )
 }
