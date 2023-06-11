@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-like-deployment
+  labels:
+    app: like
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: like
+  template:
+    metadata:
+      labels:
+        app: like
+    spec:
+      containers:
+        - name: backend-like
+          image: harsh3305/hrv-mart-backend-like
+          ports:
+            - containerPort: 8084
+          imagePullPolicy: Always
+          env:
+            - name: MONGODB_URI
+              valueFrom:
+                configMapKeyRef:
+                  key: mongodb-uri
+                  name: config-map
+            - name: KAFKA_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: config-map
+                  key: kafka-url
+            - name: PRODUCT_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: config-map
+                  key: product-server-url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-like-service
+spec:
+  selector:
+    app: like
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8084
+      targetPort: 8084
+      nodePort: 30004
