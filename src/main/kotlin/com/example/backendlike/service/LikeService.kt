@@ -3,7 +3,7 @@ package com.example.backendlike.service
 import com.hrv.mart.custompageable.Pageable
 import com.example.backendlike.model.Like
 import com.example.backendlike.repository.LikeRepository
-import com.hrv.mart.product.Product
+import com.hrv.mart.product.model.Product
 import com.hrv.mart.product.repository.ProductRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
@@ -24,7 +24,7 @@ class LikeService (
     fun getAllLikesOfUser(userId: String, pageRequest: PageRequest) =
         likeRepository.findLikeByUserId(userId, pageRequest)
             .map { it.productId }
-            .flatMap { productRepository.getProductByProductId(it) }
+            .flatMap { productRepository.getProductByProductId(it, resopnse=null) }
             .collectList()
             .flatMap { likes ->
                 likeRepository.countLikeByUserId(userId)
