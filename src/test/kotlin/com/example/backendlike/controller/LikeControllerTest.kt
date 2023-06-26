@@ -133,10 +133,10 @@ class LikeControllerTest {
 
         doReturn(Mono.just(product1))
             .`when`(productRepository)
-            .getProductByProductId(product1.id, response)
+            .getProductByProductId(product1.id, null)
         doReturn(Mono.just(product2))
             .`when`(productRepository)
-            .getProductByProductId(product2.id, response)
+            .getProductByProductId(product2.id, null)
         StepVerifier.create(likeController.getAllLikesOfUser(
             userId = like1.userId,
             size = Optional.of(size.toInt()),
@@ -163,7 +163,7 @@ class LikeControllerTest {
             .countLikeByUserId(like1.userId)
         doReturn(Mono.just(product1))
             .`when`(productRepository)
-            .getProductByProductId(product1.id, response)
+            .getProductByProductId(product1.id, null)
         StepVerifier.create(likeController.getAllLikesOfUser(
             userId = like1.userId,
             size = Optional.of(size.toInt()),
