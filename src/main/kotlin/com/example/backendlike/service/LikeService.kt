@@ -24,7 +24,7 @@ class LikeService (
     fun getAllLikesOfUser(userId: String, pageRequest: PageRequest) =
         likeRepository.findLikeByUserId(userId, pageRequest)
             .map { it.productId }
-            .flatMap { productRepository.getProductByProductId(it, resopnse=null) }
+            .flatMap { productRepository.getProductByProductId(it, response=null) }
             .collectList()
             .flatMap { likes ->
                 likeRepository.countLikeByUserId(userId)
