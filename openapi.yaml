@@ -1,0 +1,152 @@
+openapi: 3.0.3
+info:
+  title: Backend Product
+  description: |-
+    This is Like micorservice for backend of **HRV-Mart**. This API will contains operations related to Like and have its own database. For more information, visit
+  contact:
+    email: harshverma3305@gmail.com
+    name: Harsh Verma
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080
+tags:
+  - name: like
+    description: Operations about like
+paths:
+  /like:
+    post:
+      tags:
+        - like
+      summary: Add product to like
+      operationId: createLike
+      requestBody:
+        description: Like Operation
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Like'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Like'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Like'
+      responses:
+        default:
+          description: Like added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Like'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Like'
+        500:
+          description: Like already exist.
+  /like/{userId}:
+    get:
+      tags:
+        - like
+      summary: Get like products of user
+      description: 'Pageable'
+      operationId: getLikeOfUser
+      parameters:
+        - name: userId
+          in: path
+          description: The id that needs to be fetched. Use userId for testing.
+          required: true
+          schema:
+            type: string
+        - name: size
+          in: query
+          description: Requested page size. Default will be 10
+          required: false
+        - name: page
+          in: query
+          description: Requested page index. Default will be 0
+          required: false
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LikePageable'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/LikePageable'
+  /like/{userId}/{productId}:
+    delete:
+      tags:
+        - like
+      summary: Remove like
+      operationId: deleteLike
+      parameters:
+        - name: userId
+          in: path
+          description: The userId that needs to be deleted
+          required: true
+          schema:
+            type: string
+        - name: productId
+          in: path
+          description: Like removed successfully
+          required: true
+          schema:
+            type: string
+      responses:
+        404:
+          description: Like nor found
+    get:
+      tags:
+        - like
+      summary: Give whether like exist in database of not
+      operationId: likeExistByUserIdAndProductId
+      parameters:
+        - name: userId
+          in: path
+          description: id of user who liked product
+          required: true
+          schema:
+            type: string
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Return true or false
+components:
+  schemas:
+    Like:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: 123456absc
+          description: This will be use as user Id.
+        productId:
+          type: string
+          example: 123456absc
+          description: This will be use as product Id.
+      xml:
+        name: product
+    LikePageable:
+      type: object
+      properties:
+        size:
+          type: number
+          example: 10
+          description: Maximum like object which can be retrieve from database
+        nextPage:
+          type: number
+          example: 2
+          description: Next page index if available else it will be null
+        data:
+          type: array
+          items:
+            type: object

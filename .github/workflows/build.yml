@@ -4,10 +4,16 @@ on:
   pull_request:
     branches:
       - '*'
+  push:
+    branches:
+      - 'master'
 
 env:
   MONGODB_URI: 'mongodb://localhost:27017'
-  PORT: '8080'
+  APPLICATION_PORT: '8080'
+  USERNAME: ${{secrets.OSSRH_USERNAME}}
+  TOKEN: ${{secrets.OSSRH_TOKEN}}
+  PRODUCT_URL: "http://localhost:8081/product"
 
 jobs:
   build:

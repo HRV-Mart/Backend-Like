@@ -14,7 +14,10 @@ on:
     types: [published]
 env:
   MONGODB_URI: ${{ secrets.MONGODB_URI }}
-  PORT: ${{ secrets.PORT }}
+  APPLICATION_PORT: ${{ secrets.APPLICATION_PORT }}
+  USERNAME: ${{secrets.OSSRH_USERNAME}}
+  TOKEN: ${{secrets.OSSRH_TOKEN}}
+  PRODUCT_URL: ${{ secrets.PRODUCT_URL }}
 jobs:
   push_to_registries:
     name: Push Docker image to multiple registries
