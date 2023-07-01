@@ -38,7 +38,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")
     // Custom-Pageable
-    implementation("com.hrv.mart:custom-pageable:0.0.1-SNAPSHOT")
+    implementation("com.hrv.mart:custom-pageable:0.0.2")
     // product
     implementation("com.hrv.mart:product:0.0.6")
 }

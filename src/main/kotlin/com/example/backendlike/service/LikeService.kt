@@ -1,6 +1,6 @@
 package com.example.backendlike.service
 
-import com.hrv.mart.custompageable.Pageable
+import com.hrv.mart.custompageable.model.Pageable
 import com.example.backendlike.model.Like
 import com.example.backendlike.repository.LikeRepository
 import com.hrv.mart.product.model.Product
