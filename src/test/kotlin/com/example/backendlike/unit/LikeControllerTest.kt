@@ -1,5 +1,6 @@
-package com.example.backendlike.controller
+package com.example.backendlike.unit
 
+import com.example.backendlike.controller.LikeController
 import com.hrv.mart.custompageable.model.Pageable
 import com.example.backendlike.model.Like
 import com.example.backendlike.repository.LikeRepository
