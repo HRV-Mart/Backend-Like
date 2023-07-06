@@ -1,8 +1,8 @@
 package com.example.backendlike.unit
 
 import com.example.backendlike.controller.LikeController
+import com.example.backendlike.fixture.LikeFixture
 import com.hrv.mart.custompageable.model.Pageable
-import com.example.backendlike.model.Like
 import com.example.backendlike.repository.LikeRepository
 import com.example.backendlike.service.LikeService
 import com.hrv.mart.product.model.Product
@@ -23,32 +23,11 @@ class LikeControllerTest {
     private val productRepository = mock(ProductRepository::class.java)
     private val likeService = LikeService(likeRepository, productRepository)
     private val likeController = LikeController(likeService)
-    private val like1 = Like(
-        userId = "userID",
-        productId = "test_image_1"
-    )
-    private val like2 = Like(
-        userId = "userID",
-        productId = "test_image_2"
-    )
-    private val product1 = Product(
-        name = "Test Product",
-        description = "Only for testing",
-        images = listOf("https://image.hrv-mart.com/test_image_1"),
-        price = 100,
-        id = "test_image_1"
-    )
-    private val product2 = Product(
-        name = "Test Product 2",
-        description = "Only for testing",
-        images = listOf("https://image.hrv-mart.com/test_image_2"),
-        price = 100,
-        id = "test_image_2"
-    )
+
     @Test
     fun `should insert like in database when not exist in database`() {
-        doReturn(Mono.just(like1)).`when`(likeRepository).insert(like1)
-        StepVerifier.create(likeController.addProductToLike(like1, response))
+        doReturn(Mono.just(LikeFixture.like1)).`when`(likeRepository).insert(LikeFixture.like1)
+        StepVerifier.create(likeController.addProductToLike(LikeFixture.like1, response))
             .expectNext("Like added successfully")
             .verifyComplete()
     }
@@ -56,8 +35,8 @@ class LikeControllerTest {
     fun `should not insert like in database when it exist in database`() {
         doReturn(Mono.error<Exception>(Exception("Like already exist")))
             .`when`(likeRepository)
-            .insert(like1)
-        StepVerifier.create(likeController.addProductToLike(like1, response))
+            .insert(LikeFixture.like1)
+        StepVerifier.create(likeController.addProductToLike(LikeFixture.like1, response))
             .expectNext("Like already exist")
             .verifyComplete()
     }
@@ -65,13 +44,13 @@ class LikeControllerTest {
     fun `should remove like from database when it does not exist in database`() {
         doReturn(Mono.just(true))
             .`when`(likeRepository)
-            .existsByUserIdAndProductId(like1.userId, like1.productId)
+            .existsByUserIdAndProductId(LikeFixture.like1.userId, LikeFixture.like1.productId)
         doReturn(Mono.empty<Void>())
             .`when`(likeRepository)
-            .deleteByUserIdAndProductId(like1.userId, like1.productId)
+            .deleteByUserIdAndProductId(LikeFixture.like1.userId, LikeFixture.like1.productId)
         StepVerifier.create(likeController.removeProductFromLike(
-            userId = like1.userId,
-            productId = like1.productId,
+            userId = LikeFixture.like1.userId,
+            productId = LikeFixture.like1.productId,
             response = response
         ))
             .expectNext("Like removed successfully")
@@ -81,10 +60,10 @@ class LikeControllerTest {
     fun `should not remove like from database if it does not exist in database`() {
         doReturn(Mono.just(false))
             .`when`(likeRepository)
-            .existsByUserIdAndProductId(like1.userId, like1.productId)
+            .existsByUserIdAndProductId(LikeFixture.like1.userId, LikeFixture.like1.productId)
         StepVerifier.create(likeController.removeProductFromLike(
-            userId = like1.userId,
-            productId = like1.productId,
+            userId = LikeFixture.like1.userId,
+            productId = LikeFixture.like1.productId,
             response = response
         ))
             .expectNext("Like not found")
@@ -94,10 +73,10 @@ class LikeControllerTest {
     fun `should return true if like exist in database`() {
         doReturn(Mono.just(true))
             .`when`(likeRepository)
-            .existsByUserIdAndProductId(like1.userId, like1.productId)
+            .existsByUserIdAndProductId(LikeFixture.like1.userId, LikeFixture.like1.productId)
         StepVerifier.create(likeController.isProductLikedByUser(
-            productId = like1.productId,
-            userId = like1.userId
+            productId = LikeFixture.like1.productId,
+            userId = LikeFixture.like1.userId
         ))
             .expectNext(true)
             .verifyComplete()
@@ -106,10 +85,10 @@ class LikeControllerTest {
     fun `should return false if like does not exist in database`() {
         doReturn(Mono.just(false))
             .`when`(likeRepository)
-            .existsByUserIdAndProductId(like1.userId, like1.productId)
+            .existsByUserIdAndProductId(LikeFixture.like1.userId, LikeFixture.like1.productId)
         StepVerifier.create(likeController.isProductLikedByUser(
-            productId = like1.productId,
-            userId = like1.userId
+            productId = LikeFixture.like1.productId,
+            userId = LikeFixture.like1.userId
         ))
             .expectNext(false)
             .verifyComplete()
@@ -122,24 +101,24 @@ class LikeControllerTest {
         val expected = Pageable(
             nextPage = null,
             size = size,
-            data = listOf(product1, product2)
+            data = listOf(LikeFixture.product1, LikeFixture.product2)
         )
-        doReturn(Flux.just(like1, like2))
+        doReturn(Flux.just(LikeFixture.like1, LikeFixture.like2))
             .`when`(likeRepository)
-            .findLikeByUserId(like1.userId, PageRequest.of(index.toInt(), size.toInt()))
+            .findLikeByUserId(LikeFixture.like1.userId, PageRequest.of(index.toInt(), size.toInt()))
 
         doReturn(Mono.just(2L))
             .`when`(likeRepository)
-            .countLikeByUserId(like1.userId)
+            .countLikeByUserId(LikeFixture.like1.userId)
 
-        doReturn(Mono.just(product1))
+        doReturn(Mono.just(LikeFixture.product1))
             .`when`(productRepository)
-            .getProductByProductId(product1.id, null)
-        doReturn(Mono.just(product2))
+            .getProductByProductId(LikeFixture.product1.id, null)
+        doReturn(Mono.just(LikeFixture.product2))
             .`when`(productRepository)
-            .getProductByProductId(product2.id, null)
+            .getProductByProductId(LikeFixture.product2.id, null)
         StepVerifier.create(likeController.getAllLikesOfUser(
-            userId = like1.userId,
+            userId = LikeFixture.like1.userId,
             size = Optional.of(size.toInt()),
             page = Optional.of(index.toInt())
         ))
@@ -154,19 +133,19 @@ class LikeControllerTest {
         val expected = Pageable(
             nextPage = 1,
             size = size,
-            data = listOf(product1)
+            data = listOf(LikeFixture.product1)
         )
-        doReturn(Flux.just(like1))
+        doReturn(Flux.just(LikeFixture.like1))
             .`when`(likeRepository)
-            .findLikeByUserId(like1.userId, PageRequest.of(index.toInt(), size.toInt()))
+            .findLikeByUserId(LikeFixture.like1.userId, PageRequest.of(index.toInt(), size.toInt()))
         doReturn(Mono.just(2L))
             .`when`(likeRepository)
-            .countLikeByUserId(like1.userId)
-        doReturn(Mono.just(product1))
+            .countLikeByUserId(LikeFixture.like1.userId)
+        doReturn(Mono.just(LikeFixture.product1))
             .`when`(productRepository)
-            .getProductByProductId(product1.id, null)
+            .getProductByProductId(LikeFixture.product1.id, null)
         StepVerifier.create(likeController.getAllLikesOfUser(
-            userId = like1.userId,
+            userId = LikeFixture.like1.userId,
             size = Optional.of(size.toInt()),
             page = Optional.of(index.toInt())
         ))
@@ -184,12 +163,12 @@ class LikeControllerTest {
         )
         doReturn(Flux.empty<String>())
             .`when`(likeRepository)
-            .findLikeByUserId(like1.userId, PageRequest.of(index.toInt(), size.toInt()))
+            .findLikeByUserId(LikeFixture.like1.userId, PageRequest.of(index.toInt(), size.toInt()))
         doReturn(Mono.just(1L))
             .`when`(likeRepository)
-            .countLikeByUserId(like1.userId)
+            .countLikeByUserId(LikeFixture.like1.userId)
         StepVerifier.create(likeController.getAllLikesOfUser(
-            userId = like1.userId,
+            userId = LikeFixture.like1.userId,
             size = Optional.of(size.toInt()),
             page = Optional.of(index.toInt())
         ))
