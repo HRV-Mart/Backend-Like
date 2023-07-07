@@ -1,4 +1,4 @@
-package com.example.backendlike.unit
+package com.example.backendlike
 
 import com.example.backendlike.controller.LikeController
 import com.example.backendlike.fixture.LikeFixture
