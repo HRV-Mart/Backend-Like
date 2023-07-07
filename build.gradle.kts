@@ -42,7 +42,6 @@ dependencies {
     implementation("com.hrv.mart:product:0.0.6")
     // Testcontainers
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
-    testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:mongodb")
 }
 detekt {
