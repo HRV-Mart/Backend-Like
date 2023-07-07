@@ -188,7 +188,7 @@ class LikeControllerTest (
         @BeforeAll
         fun beforeAll() {
             mongoDBContainer = MongoDBContainer("mongo:latest")
-                .apply { withExposedPorts(27017) }
+                .apply { withExposedPorts(27_017) }
                 .apply { start() }
             mongoDBContainer
                 .withReuse(true)
