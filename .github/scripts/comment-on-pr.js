@@ -1,4 +1,4 @@
-const prNumber = process.env.GITHUB_EVENT.pull_request.number;
+const prNumber = process.argv[2];
 const comment = '@dependabot squash and merge';
 
 const github = require('@actions/github');
