@@ -3,7 +3,6 @@ on:
   pull_request:
     branches:
       - '*'
-
 jobs:
   comment:
     runs-on: ubuntu-latest
@@ -11,6 +10,14 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install dependencies
+        run: npm install @actions/github
 
       - name: Comment on PR
         run: node .github/scripts/comment-on-pr.js ${{ github.event.pull_request.number }}
