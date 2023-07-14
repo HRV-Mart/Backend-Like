@@ -6,16 +6,14 @@ on:
 jobs:
   comment:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Create commit comment
-        uses: peter-evans/commit-comment@v1
+      - uses: actions/github-script@v6
         with:
-          body: |
-            This is a multi-line test comment
-            - With GitHub **Markdown**
-            - Created by [commit-comment][1]
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '👋 Thanks for reporting!'
+            })
 
-            [1]: https://github.com/peter-evans/commit-comment
