@@ -1,14 +1,16 @@
 name: Comment on Dependabot PR
+
 on:
-  create:
-    branches:
-      - 'dependabot/**'
+  pull_request:
+    types:
+      - opened
 
 jobs:
   comment:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v6
+        if: startsWith(github.head_ref, 'dependabot/')
         with:
           script: |
             github.rest.issues.createComment({
