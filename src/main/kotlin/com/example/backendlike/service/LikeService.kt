@@ -7,6 +7,7 @@ import com.hrv.mart.product.model.Product
 import com.hrv.mart.product.repository.ProductRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.http.server.reactive.ServerHttpResponse
 import org.springframework.stereotype.Service
@@ -22,7 +23,12 @@ class LikeService (
 )
 {
     fun getAllLikesOfUser(userId: String, pageRequest: PageRequest) =
-        likeRepository.findLikeByUserId(userId, pageRequest)
+        likeRepository.findLikeByUserId(userId, pageRequest.withSort(
+            Sort.by(
+                Sort.Direction.ASC,
+                "productId"
+            )
+        ))
             .map { it.productId }
             .flatMap { productRepository.getProductByProductId(it, response=null) }
             .collectList()
