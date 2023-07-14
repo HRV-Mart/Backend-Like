@@ -1,8 +1,8 @@
 name: Comment on Dependabot PR
 on:
   pull_request:
-    types:
-      - push
+    branches:
+      - '*'
 
 jobs:
   comment:
