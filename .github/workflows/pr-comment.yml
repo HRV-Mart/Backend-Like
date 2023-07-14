@@ -1,8 +1,9 @@
 name: Comment on Dependabot PR
 on:
-  pull_request:
+  create:
     branches:
-      - '*'
+      - 'dependabot/**'
+
 jobs:
   comment:
     runs-on: ubuntu-latest
