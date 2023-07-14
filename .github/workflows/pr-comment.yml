@@ -10,16 +10,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - name: Create commit comment
+        uses: peter-evans/commit-comment@v1
         with:
-          node-version: 14
+          body: |
+            This is a multi-line test comment
+            - With GitHub **Markdown**
+            - Created by [commit-comment][1]
 
-      - name: Install dependencies
-        run: npm install @actions/github
-
-      - name: Comment on PR
-        run: node .github/scripts/comment-on-pr.js ${{ github.event.pull_request.number }}
-        env:
-          GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
+            [1]: https://github.com/peter-evans/commit-comment
