@@ -124,6 +124,7 @@ class LikeControllerTest (
             nextPage = null,
             size = size,
             data = listOf(LikeFixture.product1, LikeFixture.product2)
+                .sortedWith(compareBy { it.id })
         )
         StepVerifier.create(likeController.getAllLikesOfUser(
             userId = LikeFixture.like1.userId,
